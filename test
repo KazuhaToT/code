@@ -1,0 +1,86 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class phanSo{
+    public:
+        int tuso, mauso;
+        float value=tuso/mauso;
+        void nhapphanso();
+        void inphanso();
+        void toigian();
+};
+void phanSo::nhapphanso(){
+    cout<<"nhap tu so: "; cin>>tuso;
+    cout<<"nhap mau so: "; cin>>mauso;
+}
+void phanSo::inphanso(){
+    if(mauso==1) cout<<"phan so la: "<<tuso<<endl;
+    else if( mauso==0) cout<<"phan so khong ton tai."<<endl;
+    else
+    cout<<"phan so la: "<<tuso<<"/"<<mauso<<endl;
+}
+int ucln(int a,int b){
+    if(b==0)return a;
+    return ucln(b , a%b);
+}
+void phanSo::toigian(){
+    int tmp=ucln(tuso,mauso);
+    tuso/=tmp;
+    mauso/=tmp;
+}
+int bcnn(int a,int b){
+    return a*b/ucln(a,b);
+}
+void tong(const phanSo x[],int n){
+     phanSo sum;
+     sum.tuso=x[0].tuso; sum.mauso=x[0].mauso;
+     for(int i=1;i<n;i++){
+         sum.tuso+=x[i].tuso*(bcnn(sum.mauso,x[i].mauso)/x[i].mauso);
+         sum.mauso=bcnn(sum.mauso,x[i].mauso);
+     }
+     sum.toigian();
+     cout<<"tong day: "<<sum.tuso<<"/"<<sum.mauso;
+}
+void tich(const phanSo x[],int n){
+    phanSo mul;
+    mul.tuso=1;mul.mauso=1;
+    for(int i=0;i<n;i++){
+        mul.tuso*=x[i].tuso;
+        mul.mauso*=x[i].mauso;
+    }
+    mul.toigian();
+    cout<<"tich cac phan so cua day la: "<<mul.tuso<<"/"<<mul.mauso<<endl;
+}
+
+
+int main(){
+    phanSo *phanso;
+    int n;
+    cout<<"So luong phan so la: "; cin >>n;
+    phanso = new phanSo[n];
+    for(int i=0;i<n;i++){
+        cout<<"phan so thu "<<i+1<<"la: "<<endl;
+        phanso[i].nhapphanso();
+    }
+    cout<<"day phan so vua nhap la: ";
+   for(int i=0;i<n;i++){
+        phanso[i].inphanso();
+        cout<<" ";
+    }
+    tong(phanso,n);
+    tich(phanso,n);
+    float maxnb;
+    int vtri;
+    for(int i=0;i<n;i++){
+        if(maxnb<phanso[i].value){
+            maxnb=phanso[i].value;
+            vtri=i;
+        }
+    }
+    cout<<"phan so lon nhat la: "<<phanso[vtri].tuso<<"/"<<phanso[vtri].mauso;
+    delete[] phanso;
+    return 0;
+    
+    
+    
+}
